@@ -40,99 +40,106 @@
             <div class="space-y-8">
                 @if ($currentTab === 'links')
                     <section class="space-y-6">
-                        <article class="rounded-[2rem] border border-black/5 bg-white p-6 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.24)] lg:p-8">
-                            <div class="space-y-2">
-                                <h2 class="text-2xl font-semibold text-slate-950">Kelola Link</h2>
-                                <p class="text-sm leading-6 text-slate-600">
-                                    Tambah, hapus, dan atur urutan link publikmu.
-                                </p>
-                            </div>
-
-                            <form method="POST" action="{{ route('links.store') }}" class="mt-8 grid gap-5 rounded-[1.5rem] bg-slate-50 p-6 md:grid-cols-2">
-                                @csrf
-
-                                <div class="flex flex-col gap-2 md:col-span-2">
-                                    <label for="link_title" class="text-sm font-medium text-slate-700">Judul Link</label>
-                                    <input
-                                        id="link_title"
-                                        name="title"
-                                        type="text"
-                                        value="{{ old('title') }}"
-                                        class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[var(--color-brand-500)]"
-                                        placeholder="Contoh: Portfolio, WhatsApp, Toko Online"
-                                        required
-                                    >
-                                    @error('title')
-                                        <p class="text-sm text-rose-600">{{ $message }}</p>
-                                    @enderror
+                        <details class="group rounded-[2rem] border border-black/5 bg-white shadow-[0_24px_80px_-40px_rgba(15,23,42,0.24)] lg:p-2 overflow-hidden" {{ old('title') || $errors->any() ? 'open' : '' }}>
+                            <summary class="list-none cursor-pointer p-6 lg:p-8 flex items-center justify-between group-open:pb-2 transition-all">
+                                <div class="space-y-1">
+                                    <h2 class="text-2xl font-semibold text-slate-950">Kelola Link</h2>
+                                    <p class="text-sm leading-6 text-slate-600">
+                                        Tambah, hapus, dan atur urutan link publikmu.
+                                    </p>
                                 </div>
-
-                                <div class="flex flex-col gap-2 md:col-span-2">
-                                    <label for="link_url" class="text-sm font-medium text-slate-700">URL</label>
-                                    <input
-                                        id="link_url"
-                                        name="url"
-                                        type="url"
-                                        value="{{ old('url') }}"
-                                        class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[var(--color-brand-500)]"
-                                        placeholder="https://example.com"
-                                        required
-                                    >
-                                    @error('url')
-                                        <p class="text-sm text-rose-600">{{ $message }}</p>
-                                    @enderror
+                                <div class="flex size-12 items-center justify-center rounded-2xl bg-slate-50 text-slate-400 group-open:rotate-45 transition-transform">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
                                 </div>
+                            </summary>
 
-                                <div class="flex flex-col gap-2">
-                                    <label for="link_icon" class="text-sm font-medium text-slate-700">Icon / Label (Opsional)</label>
-                                    <input
-                                        id="link_icon"
-                                        name="icon"
-                                        type="text"
-                                        value="{{ old('icon') }}"
-                                        class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[var(--color-brand-500)]"
-                                        placeholder="Contoh: link"
-                                    >
-                                    @error('icon')
-                                        <p class="text-sm text-rose-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                            <div class="px-6 pb-6 lg:px-8 lg:pb-8 pt-4 border-t border-slate-50">
+                                <form method="POST" action="{{ route('links.store') }}" class="grid gap-5 md:grid-cols-2">
+                                    @csrf
 
-                                <div class="flex flex-col gap-2">
-                                    <label for="link_sort_order" class="text-sm font-medium text-slate-700">Urutan</label>
-                                    <input
-                                        id="link_sort_order"
-                                        name="sort_order"
-                                        type="number"
-                                        min="1"
-                                        value="{{ old('sort_order', max($profile->links->count() + 1, 1)) }}"
-                                        class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
-                                        required
-                                    >
-                                    @error('sort_order')
-                                        <p class="text-sm text-rose-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="md:col-span-2 flex flex-col gap-4 pt-2 sm:flex-row sm:items-center sm:justify-between">
-                                    <label class="flex items-center gap-3 text-sm text-slate-600 cursor-pointer">
-                                        <input type="hidden" name="is_active" value="0">
+                                    <div class="flex flex-col gap-2 md:col-span-2">
+                                        <label for="link_title" class="text-sm font-medium text-slate-700">Judul Link</label>
                                         <input
-                                            type="checkbox"
-                                            name="is_active"
-                                            value="1"
-                                            @checked(old('is_active', true))
-                                            class="size-5 rounded-lg border-slate-300 text-[var(--color-brand-500)] focus:ring-[var(--color-brand-500)]"
+                                            id="link_title"
+                                            name="title"
+                                            type="text"
+                                            value="{{ old('title') }}"
+                                            class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[var(--color-brand-500)]"
+                                            placeholder="Contoh: Portfolio, WhatsApp, Toko Online"
+                                            required
                                         >
-                                        <span>Langsung aktifkan link ini</span>
-                                    </label>
+                                        @error('title')
+                                            <p class="text-sm text-rose-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
 
-                                    <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-[var(--color-brand-500)] px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-brand-600)] shadow-lg shadow-[var(--color-brand-500)]/20">
-                                        Tambah Link
-                                    </button>
-                                </div>
-                            </form>
-                        </article>
+                                    <div class="flex flex-col gap-2 md:col-span-2">
+                                        <label for="link_url" class="text-sm font-medium text-slate-700">URL</label>
+                                        <input
+                                            id="link_url"
+                                            name="url"
+                                            type="url"
+                                            value="{{ old('url') }}"
+                                            class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[var(--color-brand-500)]"
+                                            placeholder="https://example.com"
+                                            required
+                                        >
+                                        @error('url')
+                                            <p class="text-sm text-rose-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="flex flex-col gap-2">
+                                        <label for="link_icon" class="text-sm font-medium text-slate-700">Icon / Label (Opsional)</label>
+                                        <input
+                                            id="link_icon"
+                                            name="icon"
+                                            type="text"
+                                            value="{{ old('icon') }}"
+                                            class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[var(--color-brand-500)]"
+                                            placeholder="Contoh: link"
+                                        >
+                                        @error('icon')
+                                            <p class="text-sm text-rose-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="flex flex-col gap-2">
+                                        <label for="link_sort_order" class="text-sm font-medium text-slate-700">Urutan</label>
+                                        <input
+                                            id="link_sort_order"
+                                            name="sort_order"
+                                            type="number"
+                                            min="1"
+                                            value="{{ old('sort_order', max($profile->links->count() + 1, 1)) }}"
+                                            class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                            required
+                                        >
+                                        @error('sort_order')
+                                            <p class="text-sm text-rose-600">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="md:col-span-2 flex flex-col gap-4 pt-2 sm:flex-row sm:items-center sm:justify-between">
+                                        <label class="flex items-center gap-3 text-sm text-slate-600 cursor-pointer">
+                                            <input type="hidden" name="is_active" value="0">
+                                            <input
+                                                type="checkbox"
+                                                name="is_active"
+                                                value="1"
+                                                @checked(old('is_active', true))
+                                                class="size-5 rounded-lg border-slate-300 text-[var(--color-brand-500)] focus:ring-[var(--color-brand-500)]"
+                                            >
+                                            <span>Langsung aktifkan link ini</span>
+                                        </label>
+
+                                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-[var(--color-brand-500)] px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-brand-600)] shadow-lg shadow-[var(--color-brand-500)]/20">
+                                            Tambah Link
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </details>
 
                         <div class="flex flex-col gap-4">
                             @forelse ($profile->links as $link)
