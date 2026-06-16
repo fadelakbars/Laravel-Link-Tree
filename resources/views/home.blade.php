@@ -49,12 +49,12 @@
                     <div class="relative rounded-[3rem] border-[12px] border-white bg-white p-6 shadow-[0_40px_100px_-20px_rgba(15,23,42,0.15)] ring-1 ring-slate-100 backdrop-blur-sm">
                         <div class="flex flex-col items-center gap-6 text-center">
                             <div class="size-24 rounded-[2rem] bg-[var(--color-surface-100)] flex items-center justify-center text-4xl font-bold text-slate-800 shadow-inner">
-                                FA
+                                AR
                             </div>
                             <div class="space-y-2">
-                                <h2 class="text-2xl font-bold text-slate-900">Fadel Akbar</h2>
+                                <h2 class="text-2xl font-bold text-slate-900">Alex Rivera</h2>
                                 <p class="text-sm leading-6 text-slate-500 px-4">
-                                    Developer & Creator yang menyukai kesederhanaan dalam desain.
+                                    Digital Architect & Explorer yang menyukai kesederhanaan dalam desain.
                                 </p>
                             </div>
                         </div>
