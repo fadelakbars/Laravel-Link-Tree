@@ -58,3 +58,52 @@ test('user can logout', function () {
     $response->assertRedirect(route('login'));
     $this->assertGuest();
 });
+
+test('authenticated user can update profile details', function () {
+    $user = User::factory()->create();
+
+    $user->profile()->create([
+        'display_name' => 'Old Name',
+        'slug' => 'old-name',
+        'bio' => 'Old bio',
+    ]);
+
+    $response = $this->actingAs($user)->put(route('profile.update'), [
+        'display_name' => 'New Public Name',
+        'slug' => 'New Public Slug',
+        'bio' => 'Bio yang sudah diperbarui.',
+    ]);
+
+    $response->assertRedirect(route('dashboard'));
+    $response->assertSessionHas('status', 'Profil publik berhasil diperbarui.');
+
+    $user->refresh();
+
+    expect($user->profile->display_name)->toBe('New Public Name');
+    expect($user->profile->slug)->toBe('new-public-slug');
+    expect($user->profile->bio)->toBe('Bio yang sudah diperbarui.');
+});
+
+test('profile update requires a unique slug', function () {
+    $firstUser = User::factory()->create();
+    $secondUser = User::factory()->create();
+
+    $firstUser->profile()->create([
+        'display_name' => 'First User',
+        'slug' => 'first-user',
+    ]);
+
+    $secondUser->profile()->create([
+        'display_name' => 'Second User',
+        'slug' => 'second-user',
+    ]);
+
+    $response = $this->actingAs($secondUser)->from(route('dashboard'))->put(route('profile.update'), [
+        'display_name' => 'Second User',
+        'slug' => 'first-user',
+        'bio' => null,
+    ]);
+
+    $response->assertRedirect(route('dashboard'));
+    $response->assertSessionHasErrors('slug');
+});
