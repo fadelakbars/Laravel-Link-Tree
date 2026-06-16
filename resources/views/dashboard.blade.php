@@ -262,111 +262,134 @@
 
                 <div class="mt-5 flex flex-col gap-4">
                     @forelse ($profile->links as $link)
-                        <div class="rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-sm">
-                            <div class="mb-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
-                                <div>
-                                    <p class="text-sm font-semibold text-slate-900">{{ $link->title }}</p>
-                                    <p class="text-xs text-slate-500">Urutan saat ini: {{ $link->sort_order }}</p>
+                        <details class="group rounded-[1.5rem] border border-slate-200 bg-white shadow-sm open:shadow-[0_24px_50px_-35px_rgba(15,23,42,0.3)]">
+                            <summary class="list-none cursor-pointer p-4">
+                                <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                                    <div class="min-w-0 space-y-3">
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <h3 class="text-sm font-semibold text-slate-900">{{ $link->title }}</h3>
+                                            <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold {{ $link->is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600' }}">
+                                                {{ $link->is_active ? 'Aktif' : 'Nonaktif' }}
+                                            </span>
+                                            <span class="inline-flex items-center rounded-full bg-[var(--color-brand-50)] px-2.5 py-1 text-[11px] font-semibold text-[var(--color-brand-600)]">
+                                                Urutan {{ $link->sort_order }}
+                                            </span>
+                                        </div>
+
+                                        <p class="break-all text-sm text-slate-500">{{ $link->url }}</p>
+                                    </div>
+
+                                    <span class="inline-flex items-center self-start rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-600 transition group-open:bg-slate-900 group-open:text-white">
+                                        Edit
+                                    </span>
                                 </div>
+                            </summary>
 
-                                <div class="flex gap-2">
-                                    <form method="POST" action="{{ route('links.move-up', $link) }}">
-                                        @csrf
-                                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100">
-                                            Naik
-                                        </button>
-                                    </form>
+                            <div class="border-t border-slate-100 px-4 pb-4 pt-4">
+                                <div class="mb-4 flex flex-col gap-2 rounded-2xl bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
+                                    <p class="text-sm text-slate-600">Gunakan kontrol cepat untuk menukar posisi link.</p>
 
-                                    <form method="POST" action="{{ route('links.move-down', $link) }}">
-                                        @csrf
-                                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100">
-                                            Turun
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+                                    <div class="flex gap-2">
+                                        <form method="POST" action="{{ route('links.move-up', $link) }}">
+                                            @csrf
+                                            <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100">
+                                                Naik
+                                            </button>
+                                        </form>
 
-                            <form method="POST" action="{{ route('links.update', $link) }}">
-                                @csrf
-                                @method('PUT')
-
-                                <div class="grid gap-4 md:grid-cols-2">
-                                    <div class="flex flex-col gap-2 md:col-span-2">
-                                        <label for="title_{{ $link->id }}" class="text-sm font-medium text-slate-700">Judul Link</label>
-                                        <input
-                                            id="title_{{ $link->id }}"
-                                            name="title"
-                                            type="text"
-                                            value="{{ $link->title }}"
-                                            class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
-                                            required
-                                        >
-                                    </div>
-
-                                    <div class="flex flex-col gap-2 md:col-span-2">
-                                        <label for="url_{{ $link->id }}" class="text-sm font-medium text-slate-700">URL</label>
-                                        <input
-                                            id="url_{{ $link->id }}"
-                                            name="url"
-                                            type="url"
-                                            value="{{ $link->url }}"
-                                            class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
-                                            required
-                                        >
-                                    </div>
-
-                                    <div class="flex flex-col gap-2">
-                                        <label for="icon_{{ $link->id }}" class="text-sm font-medium text-slate-700">Icon / Label</label>
-                                        <input
-                                            id="icon_{{ $link->id }}"
-                                            name="icon"
-                                            type="text"
-                                            value="{{ $link->icon }}"
-                                            class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
-                                        >
-                                    </div>
-
-                                    <div class="flex flex-col gap-2">
-                                        <label for="sort_order_{{ $link->id }}" class="text-sm font-medium text-slate-700">Urutan</label>
-                                        <input
-                                            id="sort_order_{{ $link->id }}"
-                                            name="sort_order"
-                                            type="number"
-                                            min="1"
-                                            value="{{ $link->sort_order }}"
-                                            class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
-                                            required
-                                        >
+                                        <form method="POST" action="{{ route('links.move-down', $link) }}">
+                                            @csrf
+                                            <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100">
+                                                Turun
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
 
-                                <div class="mt-4 flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                                    <label class="flex items-center gap-3 text-sm text-slate-600">
-                                        <input type="hidden" name="is_active" value="0">
-                                        <input
-                                            type="checkbox"
-                                            name="is_active"
-                                            value="1"
-                                            @checked($link->is_active)
-                                            class="size-4 rounded border-slate-300 text-[var(--color-brand-500)]"
-                                        >
-                                        <span>{{ $link->is_active ? 'Link aktif' : 'Link nonaktif' }}</span>
-                                    </label>
+                                <form method="POST" action="{{ route('links.update', $link) }}">
+                                    @csrf
+                                    @method('PUT')
 
-                                    <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
-                                        Simpan Perubahan
+                                    <div class="grid gap-4 md:grid-cols-2">
+                                        <div class="flex flex-col gap-2 md:col-span-2">
+                                            <label for="title_{{ $link->id }}" class="text-sm font-medium text-slate-700">Judul Link</label>
+                                            <input
+                                                id="title_{{ $link->id }}"
+                                                name="title"
+                                                type="text"
+                                                value="{{ $link->title }}"
+                                                class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                                required
+                                            >
+                                        </div>
+
+                                        <div class="flex flex-col gap-2 md:col-span-2">
+                                            <label for="url_{{ $link->id }}" class="text-sm font-medium text-slate-700">URL</label>
+                                            <input
+                                                id="url_{{ $link->id }}"
+                                                name="url"
+                                                type="url"
+                                                value="{{ $link->url }}"
+                                                class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                                required
+                                            >
+                                        </div>
+
+                                        <div class="flex flex-col gap-2">
+                                            <label for="icon_{{ $link->id }}" class="text-sm font-medium text-slate-700">Icon / Label</label>
+                                            <input
+                                                id="icon_{{ $link->id }}"
+                                                name="icon"
+                                                type="text"
+                                                value="{{ $link->icon }}"
+                                                class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                            >
+                                        </div>
+
+                                        <div class="flex flex-col gap-2">
+                                            <label for="sort_order_{{ $link->id }}" class="text-sm font-medium text-slate-700">Urutan</label>
+                                            <input
+                                                id="sort_order_{{ $link->id }}"
+                                                name="sort_order"
+                                                type="number"
+                                                min="1"
+                                                value="{{ $link->sort_order }}"
+                                                class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                                required
+                                            >
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                                        <label class="flex items-center gap-3 text-sm text-slate-600">
+                                            <input type="hidden" name="is_active" value="0">
+                                            <input
+                                                type="checkbox"
+                                                name="is_active"
+                                                value="1"
+                                                @checked($link->is_active)
+                                                class="size-4 rounded border-slate-300 text-[var(--color-brand-500)]"
+                                            >
+                                            <span>{{ $link->is_active ? 'Link aktif' : 'Link nonaktif' }}</span>
+                                        </label>
+
+                                        <div class="flex flex-col gap-2 sm:flex-row">
+                                            <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
+                                                Simpan Perubahan
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <form method="POST" action="{{ route('links.destroy', $link) }}" class="mt-3 flex justify-end border-t border-slate-100 pt-3">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-700 transition hover:bg-rose-100">
+                                        Hapus Link
                                     </button>
-                                </div>
-                            </form>
-
-                            <form method="POST" action="{{ route('links.destroy', $link) }}" class="mt-3 flex justify-end border-t border-slate-100 pt-3">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-700 transition hover:bg-rose-100">
-                                    Hapus Link
-                                </button>
-                            </form>
-                        </div>
+                                </form>
+                            </div>
+                        </details>
                     @empty
                         <div class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-5 py-6 text-center text-sm text-slate-500">
                             Belum ada link. Tahap berikutnya kita akan tambahkan CRUD link di dashboard.
