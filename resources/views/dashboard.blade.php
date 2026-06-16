@@ -124,6 +124,9 @@
                 <div class="space-y-2">
                     <p class="text-sm font-medium text-[var(--color-brand-600)]">Manajemen Link</p>
                     <h2 class="text-xl font-semibold text-slate-950">Tambah dan kelola link publikmu</h2>
+                    <p class="text-sm leading-6 text-slate-600">
+                        Gunakan tombol naik dan turun untuk menukar urutan link tanpa harus mengubah angka secara manual.
+                    </p>
                 </div>
 
                 <form method="POST" action="{{ route('links.store') }}" class="mt-5 grid gap-4 rounded-[1.5rem] bg-slate-50 p-4 md:grid-cols-2">
@@ -214,6 +217,29 @@
                 <div class="mt-5 flex flex-col gap-4">
                     @forelse ($profile->links as $link)
                         <div class="rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-sm">
+                            <div class="mb-4 flex flex-col gap-3 rounded-2xl bg-slate-50 p-3 sm:flex-row sm:items-center sm:justify-between">
+                                <div>
+                                    <p class="text-sm font-semibold text-slate-900">{{ $link->title }}</p>
+                                    <p class="text-xs text-slate-500">Urutan saat ini: {{ $link->sort_order }}</p>
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <form method="POST" action="{{ route('links.move-up', $link) }}">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100">
+                                            Naik
+                                        </button>
+                                    </form>
+
+                                    <form method="POST" action="{{ route('links.move-down', $link) }}">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100">
+                                            Turun
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
                             <form method="POST" action="{{ route('links.update', $link) }}">
                                 @csrf
                                 @method('PUT')
@@ -312,7 +338,7 @@
                 <ul class="mt-5 flex flex-col gap-3 text-sm text-slate-600">
                     <li class="rounded-2xl bg-slate-50 px-4 py-3">Edit profil sudah aktif di dashboard.</li>
                     <li class="rounded-2xl bg-slate-50 px-4 py-3">CRUD link sekarang tersedia di dashboard.</li>
-                    <li class="rounded-2xl bg-slate-50 px-4 py-3">Tahap berikutnya: perbaikan UX urutan link dan kontrol naik/turun.</li>
+                    <li class="rounded-2xl bg-slate-50 px-4 py-3">Kontrol naik dan turun sudah tersedia untuk pengaturan urutan cepat.</li>
                 </ul>
 
                 <div class="mt-6 rounded-2xl border border-dashed border-slate-200 p-4">

@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/links', [LinkController::class, 'store'])->name('links.store');
+    Route::post('/links/{link}/move-up', [LinkController::class, 'moveUp'])->name('links.move-up');
+    Route::post('/links/{link}/move-down', [LinkController::class, 'moveDown'])->name('links.move-down');
     Route::put('/links/{link}', [LinkController::class, 'update'])->name('links.update');
     Route::delete('/links/{link}', [LinkController::class, 'destroy'])->name('links.destroy');
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');

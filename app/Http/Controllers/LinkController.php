@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateLinkRequest;
 use App\Models\Link;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LinkController extends Controller
 {
@@ -37,10 +38,71 @@ class LinkController extends Controller
             ->with('status', 'Link berhasil dihapus.');
     }
 
+    public function moveUp(Request $request, Link $link): RedirectResponse
+    {
+        $link = $this->findOwnedLink($request->user()->profile->id, $link);
+
+        $swapLink = Link::query()
+            ->where('profile_id', $link->profile_id)
+            ->where('sort_order', '<', $link->sort_order)
+            ->orderByDesc('sort_order')
+            ->first();
+
+        if ($swapLink === null) {
+            return redirect()
+                ->route('dashboard')
+                ->with('status', 'Link ini sudah berada di urutan paling atas.');
+        }
+
+        $this->swapSortOrder($link, $swapLink);
+
+        return redirect()
+            ->route('dashboard')
+            ->with('status', 'Urutan link berhasil dinaikkan.');
+    }
+
+    public function moveDown(Request $request, Link $link): RedirectResponse
+    {
+        $link = $this->findOwnedLink($request->user()->profile->id, $link);
+
+        $swapLink = Link::query()
+            ->where('profile_id', $link->profile_id)
+            ->where('sort_order', '>', $link->sort_order)
+            ->orderBy('sort_order')
+            ->first();
+
+        if ($swapLink === null) {
+            return redirect()
+                ->route('dashboard')
+                ->with('status', 'Link ini sudah berada di urutan paling bawah.');
+        }
+
+        $this->swapSortOrder($link, $swapLink);
+
+        return redirect()
+            ->route('dashboard')
+            ->with('status', 'Urutan link berhasil diturunkan.');
+    }
+
     private function findOwnedLink(int $profileId, Link $link): Link
     {
         return Link::query()
             ->where('profile_id', $profileId)
             ->findOrFail($link->id);
+    }
+
+    private function swapSortOrder(Link $firstLink, Link $secondLink): void
+    {
+        DB::transaction(function () use ($firstLink, $secondLink): void {
+            $originalSortOrder = $firstLink->sort_order;
+
+            $firstLink->update([
+                'sort_order' => $secondLink->sort_order,
+            ]);
+
+            $secondLink->update([
+                'sort_order' => $originalSortOrder,
+            ]);
+        });
     }
 }

@@ -120,3 +120,139 @@ test('user cannot update another users link', function () {
 
     expect($link->title)->toBe('Private Link');
 });
+
+test('authenticated user can move a link up', function () {
+    $user = User::factory()->create();
+
+    $profile = $user->profile()->create([
+        'display_name' => 'Owner',
+        'slug' => 'owner',
+    ]);
+
+    $firstLink = $profile->links()->create([
+        'title' => 'First Link',
+        'url' => 'https://example.com/first',
+        'is_active' => true,
+        'sort_order' => 1,
+    ]);
+
+    $secondLink = $profile->links()->create([
+        'title' => 'Second Link',
+        'url' => 'https://example.com/second',
+        'is_active' => true,
+        'sort_order' => 2,
+    ]);
+
+    $response = $this->actingAs($user)->post(route('links.move-up', $secondLink));
+
+    $response->assertRedirect(route('dashboard'));
+    $response->assertSessionHas('status', 'Urutan link berhasil dinaikkan.');
+
+    $firstLink->refresh();
+    $secondLink->refresh();
+
+    expect($firstLink->sort_order)->toBe(2);
+    expect($secondLink->sort_order)->toBe(1);
+});
+
+test('authenticated user can move a link down', function () {
+    $user = User::factory()->create();
+
+    $profile = $user->profile()->create([
+        'display_name' => 'Owner',
+        'slug' => 'owner',
+    ]);
+
+    $firstLink = $profile->links()->create([
+        'title' => 'First Link',
+        'url' => 'https://example.com/first',
+        'is_active' => true,
+        'sort_order' => 1,
+    ]);
+
+    $secondLink = $profile->links()->create([
+        'title' => 'Second Link',
+        'url' => 'https://example.com/second',
+        'is_active' => true,
+        'sort_order' => 2,
+    ]);
+
+    $response = $this->actingAs($user)->post(route('links.move-down', $firstLink));
+
+    $response->assertRedirect(route('dashboard'));
+    $response->assertSessionHas('status', 'Urutan link berhasil diturunkan.');
+
+    $firstLink->refresh();
+    $secondLink->refresh();
+
+    expect($firstLink->sort_order)->toBe(2);
+    expect($secondLink->sort_order)->toBe(1);
+});
+
+test('moving top link keeps order intact', function () {
+    $user = User::factory()->create();
+
+    $profile = $user->profile()->create([
+        'display_name' => 'Owner',
+        'slug' => 'owner',
+    ]);
+
+    $firstLink = $profile->links()->create([
+        'title' => 'First Link',
+        'url' => 'https://example.com/first',
+        'is_active' => true,
+        'sort_order' => 1,
+    ]);
+
+    $secondLink = $profile->links()->create([
+        'title' => 'Second Link',
+        'url' => 'https://example.com/second',
+        'is_active' => true,
+        'sort_order' => 2,
+    ]);
+
+    $moveUpResponse = $this->actingAs($user)->post(route('links.move-up', $firstLink));
+
+    $moveUpResponse->assertRedirect(route('dashboard'));
+    $moveUpResponse->assertSessionHas('status', 'Link ini sudah berada di urutan paling atas.');
+
+    $firstLink->refresh();
+    $secondLink->refresh();
+
+    expect($firstLink->sort_order)->toBe(1);
+    expect($secondLink->sort_order)->toBe(2);
+});
+
+test('moving bottom link keeps order intact', function () {
+    $user = User::factory()->create();
+
+    $profile = $user->profile()->create([
+        'display_name' => 'Owner',
+        'slug' => 'owner',
+    ]);
+
+    $firstLink = $profile->links()->create([
+        'title' => 'First Link',
+        'url' => 'https://example.com/first',
+        'is_active' => true,
+        'sort_order' => 1,
+    ]);
+
+    $secondLink = $profile->links()->create([
+        'title' => 'Second Link',
+        'url' => 'https://example.com/second',
+        'is_active' => true,
+        'sort_order' => 2,
+    ]);
+
+    $moveDownResponse = $this->actingAs($user)->post(route('links.move-down', $secondLink));
+
+    $moveDownResponse->assertRedirect(route('dashboard'));
+    $moveDownResponse->assertSessionHas('status', 'Link ini sudah berada di urutan paling bawah.');
+
+    $firstLink->refresh();
+    $secondLink->refresh();
+
+    expect($firstLink->sort_order)->toBe(1);
+    expect($secondLink->sort_order)->toBe(2);
+});
