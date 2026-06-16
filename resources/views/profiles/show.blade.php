@@ -1,8 +1,9 @@
 <x-layouts.app :title="$profile->display_name">
     <style>
         :root {
-            --color-brand-500: {{ $profile->theme_color }};
-            --color-brand-600: {{ $profile->theme_color }};
+            --theme-color: {{ $profile->theme_color }};
+            --theme-color-soft: color-mix(in srgb, {{ $profile->theme_color }}, white 92%);
+            --theme-color-ghost: color-mix(in srgb, {{ $profile->theme_color }}, white 96%);
         }
     </style>
     <main class="mx-auto flex min-h-screen max-w-xl flex-col items-center px-6 py-16">
@@ -17,8 +18,8 @@
                         >
                     @else
                         <div 
-                            class="flex size-28 items-center justify-center rounded-[2.5rem] text-4xl font-bold text-white shadow-2xl ring-4 ring-white"
-                            style="background-color: {{ $profile->theme_color }}"
+                            class="flex size-28 items-center justify-center rounded-[2.5rem] text-4xl font-bold shadow-2xl ring-4 ring-white"
+                            style="background-color: var(--theme-color-soft); color: var(--theme-color);"
                         >
                             {{ $profile->initials() }}
                         </div>
@@ -39,13 +40,24 @@
                         href="{{ $link->url }}"
                         target="_blank"
                         rel="noreferrer noopener"
-                        class="group relative flex min-h-[4rem] items-center justify-center rounded-[1.5rem] border border-white/40 bg-white/80 px-8 py-4 text-center text-base font-semibold text-slate-900 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:text-white active:scale-95"
+                        class="group relative flex min-h-[4.5rem] items-center justify-center rounded-[1.5rem] border border-slate-100 bg-white px-8 py-4 text-center text-base font-semibold text-slate-800 shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] active:scale-95"
                     >
-                        <span class="relative z-10">{{ $link->title }}</span>
+                        <!-- Hover Border Accent -->
                         <div 
-                            class="absolute inset-0 rounded-[1.5rem] opacity-0 transition-opacity group-hover:opacity-100"
-                            style="background-color: {{ $profile->theme_color }}"
+                            class="absolute inset-0 rounded-[1.5rem] border-2 border-transparent transition-colors duration-300 group-hover:border-[var(--theme-color)]"
                         ></div>
+
+                        <!-- Subtle Hover Tint -->
+                        <div 
+                            class="absolute inset-0 rounded-[1.5rem] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                            style="background-color: var(--theme-color-ghost);"
+                        ></div>
+
+                        <span class="relative z-10 transition-colors duration-300 group-hover:text-[var(--theme-color)]">{{ $link->title }}</span>
+                        
+                        <div class="absolute right-6 opacity-0 transition-all duration-300 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0" style="color: var(--theme-color);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                        </div>
                     </a>
                 @empty
                     <div class="rounded-[2rem] border-2 border-dashed border-slate-200 bg-white/50 p-12 text-center backdrop-blur-sm">
@@ -55,8 +67,8 @@
             </section>
 
             <footer class="pt-12 text-center">
-                <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-slate-400 uppercase transition hover:opacity-70" style="color: {{ $profile->theme_color }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9Z"/></svg>
+                <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-slate-300 uppercase transition hover:opacity-100" style="hover: color: var(--theme-color);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="size-3"><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9Z"/></svg>
                     Laravel Link Tree
                 </a>
             </footer>
