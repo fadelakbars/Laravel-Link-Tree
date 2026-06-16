@@ -141,13 +141,13 @@
                             </div>
                         </details>
 
-                        <div class="flex flex-col gap-4">
+                        <div id="sortable-links" class="flex flex-col gap-4">
                             @forelse ($profile->links as $link)
-                                <div class="group relative rounded-[2rem] border border-black/5 bg-white p-5 shadow-sm transition hover:shadow-md">
+                                <div data-id="{{ $link->id }}" class="group relative rounded-[2rem] border border-black/5 bg-white p-5 shadow-sm transition hover:shadow-md cursor-grab active:cursor-grabbing">
                                     <div class="flex items-start justify-between gap-4">
                                         <div class="flex items-center gap-4">
-                                            <div class="flex size-12 items-center justify-center rounded-2xl bg-slate-50 text-slate-400">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                                            <div class="handle flex size-12 items-center justify-center rounded-2xl bg-slate-50 text-slate-400 group-hover:bg-[var(--color-brand-50)] group-hover:text-[var(--color-brand-500)] transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg>
                                             </div>
                                             <div>
                                                 <h3 class="font-semibold text-slate-900">{{ $link->title }}</h3>
@@ -172,19 +172,6 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                                                 </summary>
                                                 <div class="absolute right-0 top-full z-10 mt-2 w-48 rounded-2xl border border-black/5 bg-white p-2 shadow-xl">
-                                                    <form method="POST" action="{{ route('links.move-up', $link) }}">
-                                                        @csrf
-                                                        <button type="submit" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">
-                                                            Naikkan
-                                                        </button>
-                                                    </form>
-                                                    <form method="POST" action="{{ route('links.move-down', $link) }}">
-                                                        @csrf
-                                                        <button type="submit" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">
-                                                            Turunkan
-                                                        </button>
-                                                    </form>
-                                                    <div class="my-1 border-t border-slate-100"></div>
                                                     <form method="POST" action="{{ route('links.destroy', $link) }}">
                                                         @csrf
                                                         @method('DELETE')
@@ -207,6 +194,42 @@
                                 </div>
                             @endforelse
                         </div>
+
+                        <form id="reorder-form" method="POST" action="{{ route('links.reorder') }}" class="hidden">
+                            @csrf
+                            <div id="reorder-ids"></div>
+                        </form>
+
+                        @if ($profile->links->count() > 1)
+                            <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const el = document.getElementById('sortable-links');
+                                    const form = document.getElementById('reorder-form');
+                                    const container = document.getElementById('reorder-ids');
+
+                                    Sortable.create(el, {
+                                        animation: 150,
+                                        handle: '.handle',
+                                        ghostClass: 'opacity-50',
+                                        onEnd: function() {
+                                            const ids = Array.from(el.children).map(child => child.dataset.id);
+                                            
+                                            container.innerHTML = '';
+                                            ids.forEach(id => {
+                                                const input = document.createElement('input');
+                                                input.type = 'hidden';
+                                                input.name = 'ids[]';
+                                                input.value = id;
+                                                container.appendChild(input);
+                                            });
+
+                                            form.submit();
+                                        }
+                                    });
+                                });
+                            </script>
+                        @endif
                     </section>
                 @endif
 

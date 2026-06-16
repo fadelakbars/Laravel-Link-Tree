@@ -84,6 +84,30 @@ class LinkController extends Controller
             ->with('status', 'Urutan link berhasil diturunkan.');
     }
 
+    public function reorder(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['integer', 'exists:links,id'],
+        ]);
+
+        $profileId = $request->user()->profile->id;
+        $ids = $request->input('ids');
+
+        DB::transaction(function () use ($profileId, $ids): void {
+            foreach ($ids as $index => $id) {
+                Link::query()
+                    ->where('profile_id', $profileId)
+                    ->where('id', $id)
+                    ->update(['sort_order' => $index + 1]);
+            }
+        });
+
+        return redirect()
+            ->route('dashboard')
+            ->with('status', 'Urutan link berhasil diperbarui.');
+    }
+
     private function findOwnedLink(int $profileId, Link $link): Link
     {
         return Link::query()
