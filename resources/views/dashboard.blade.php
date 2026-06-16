@@ -292,6 +292,32 @@
                                 </div>
 
                                 <div class="flex flex-col gap-2">
+                                    <label for="theme_color" class="text-sm font-medium text-slate-700">Warna Tema (Brand Color)</label>
+                                    <div class="flex items-center gap-3">
+                                        <input
+                                            id="theme_color"
+                                            name="theme_color"
+                                            type="color"
+                                            value="{{ old('theme_color', $profile->theme_color) }}"
+                                            class="size-11 rounded-xl border border-slate-200 bg-white p-1 cursor-pointer"
+                                            required
+                                        >
+                                        <input
+                                            type="text"
+                                            value="{{ old('theme_color', $profile->theme_color) }}"
+                                            oninput="document.getElementById('theme_color').value = this.value"
+                                            class="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                            placeholder="#6366f1"
+                                        >
+                                    </div>
+                                    @error('theme_color')
+                                        <p class="text-sm text-rose-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="grid gap-6 md:grid-cols-2">
+                                <div class="flex flex-col gap-2 md:col-span-2">
                                     <label for="slug" class="text-sm font-medium text-slate-700">Username / Slug</label>
                                     <div class="relative flex items-center">
                                         <span class="absolute left-4 text-slate-400 text-sm">/</span>

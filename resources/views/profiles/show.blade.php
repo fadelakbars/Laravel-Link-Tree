@@ -1,4 +1,10 @@
 <x-layouts.app :title="$profile->display_name">
+    <style>
+        :root {
+            --color-brand-500: {{ $profile->theme_color }};
+            --color-brand-600: {{ $profile->theme_color }};
+        }
+    </style>
     <main class="mx-auto flex min-h-screen max-w-xl flex-col items-center px-6 py-16">
         <div class="w-full space-y-12">
             <header class="flex flex-col items-center gap-6 text-center">

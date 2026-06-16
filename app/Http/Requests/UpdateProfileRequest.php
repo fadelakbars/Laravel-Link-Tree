@@ -34,6 +34,7 @@ class UpdateProfileRequest extends FormRequest
             'slug' => ['required', 'string', 'max:255', Rule::unique('profiles', 'slug')->ignore($profileId)],
             'bio' => ['nullable', 'string', 'max:1000'],
             'avatar' => ['nullable', File::image()->max('2mb')],
+            'theme_color' => ['required', 'string', 'regex:/^#([a-f0-9]{3}){1,2}$/i'],
         ];
     }
 

@@ -23,6 +23,7 @@ class Profile extends Model
         'slug',
         'bio',
         'avatar_path',
+        'theme_color',
     ];
 
     public function user(): BelongsTo
