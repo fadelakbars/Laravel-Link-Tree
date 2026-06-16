@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Profile extends Model
 {
@@ -37,5 +38,23 @@ class Profile extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function avatarUrl(): ?string
+    {
+        if ($this->avatar_path === null) {
+            return null;
+        }
+
+        return Storage::disk('public')->url($this->avatar_path);
+    }
+
+    public function initials(): string
+    {
+        return (string) str($this->display_name)
+            ->explode(' ')
+            ->take(2)
+            ->map(fn (string $part) => str($part)->substr(0, 1))
+            ->implode('');
     }
 }

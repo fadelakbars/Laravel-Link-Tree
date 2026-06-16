@@ -2,9 +2,17 @@
     <main class="mx-auto flex min-h-screen max-w-xl flex-col justify-center px-6 py-12">
         <section class="rounded-[2rem] border border-white/70 bg-white/95 p-6 shadow-[0_30px_90px_-42px_rgba(15,23,42,0.32)] backdrop-blur sm:p-8">
             <div class="flex flex-col items-center gap-5 text-center">
-                <div class="flex size-24 items-center justify-center rounded-full bg-[var(--color-surface-100)] text-3xl font-semibold text-slate-800 shadow-sm">
-                    {{ str($profile->display_name)->explode(' ')->take(2)->map(fn (string $part) => str($part)->substr(0, 1))->implode('') }}
-                </div>
+                @if ($profile->avatarUrl())
+                    <img
+                        src="{{ $profile->avatarUrl() }}"
+                        alt="{{ $profile->display_name }}"
+                        class="size-24 rounded-full object-cover shadow-sm"
+                    >
+                @else
+                    <div class="flex size-24 items-center justify-center rounded-full bg-[var(--color-surface-100)] text-3xl font-semibold text-slate-800 shadow-sm">
+                        {{ $profile->initials() }}
+                    </div>
+                @endif
 
                 <div class="space-y-2">
                     <h1 class="text-3xl font-semibold tracking-tight text-slate-950">{{ $profile->display_name }}</h1>

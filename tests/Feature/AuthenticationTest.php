@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 test('guest can view login and register pages', function () {
     $this->get(route('login'))->assertSuccessful();
@@ -106,4 +108,49 @@ test('profile update requires a unique slug', function () {
 
     $response->assertRedirect(route('dashboard'));
     $response->assertSessionHasErrors('slug');
+});
+
+test('authenticated user can upload and replace profile avatar', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+
+    $user->profile()->create([
+        'display_name' => 'Avatar User',
+        'slug' => 'avatar-user',
+        'bio' => 'Old bio',
+    ]);
+
+    $firstAvatar = UploadedFile::fake()->image('first-avatar.jpg');
+
+    $firstResponse = $this->actingAs($user)->put(route('profile.update'), [
+        'display_name' => 'Avatar User',
+        'slug' => 'avatar-user',
+        'bio' => 'Avatar bio',
+        'avatar' => $firstAvatar,
+    ]);
+
+    $firstResponse->assertRedirect(route('dashboard'));
+
+    $firstPath = $user->fresh()->profile->avatar_path;
+
+    expect($firstPath)->not->toBeNull();
+    Storage::disk('public')->assertExists($firstPath);
+
+    $secondAvatar = UploadedFile::fake()->image('second-avatar.jpg');
+
+    $secondResponse = $this->actingAs($user)->put(route('profile.update'), [
+        'display_name' => 'Avatar User',
+        'slug' => 'avatar-user',
+        'bio' => 'Avatar bio updated',
+        'avatar' => $secondAvatar,
+    ]);
+
+    $secondResponse->assertRedirect(route('dashboard'));
+
+    $profile = $user->fresh()->profile;
+
+    expect($profile->avatar_path)->not->toBe($firstPath);
+    Storage::disk('public')->assertMissing($firstPath);
+    Storage::disk('public')->assertExists($profile->avatar_path);
 });

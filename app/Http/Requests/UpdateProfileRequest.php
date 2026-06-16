@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\Attributes\RedirectToRoute;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 #[RedirectToRoute('dashboard')]
 class UpdateProfileRequest extends FormRequest
@@ -32,6 +33,7 @@ class UpdateProfileRequest extends FormRequest
             'display_name' => ['required', 'string', 'max:255'],
             'slug' => ['required', 'string', 'max:255', Rule::unique('profiles', 'slug')->ignore($profileId)],
             'bio' => ['nullable', 'string', 'max:1000'],
+            'avatar' => ['nullable', File::image()->max('2mb')],
         ];
     }
 

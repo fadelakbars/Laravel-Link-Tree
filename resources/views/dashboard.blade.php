@@ -33,9 +33,38 @@
                     </p>
                 </div>
 
-                <form method="POST" action="{{ route('profile.update') }}" class="mt-6 flex flex-col gap-5">
+                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 flex flex-col gap-5">
                     @csrf
                     @method('PUT')
+
+                    <div class="flex flex-col gap-4 rounded-[1.5rem] bg-slate-50 p-4 sm:flex-row sm:items-center">
+                        @if ($profile->avatarUrl())
+                            <img
+                                src="{{ $profile->avatarUrl() }}"
+                                alt="{{ $profile->display_name }}"
+                                class="size-20 rounded-full object-cover shadow-sm"
+                            >
+                        @else
+                            <div class="flex size-20 items-center justify-center rounded-full bg-white text-2xl font-semibold text-slate-800 shadow-sm">
+                                {{ $profile->initials() }}
+                            </div>
+                        @endif
+
+                        <div class="flex-1 space-y-2">
+                            <label for="avatar" class="text-sm font-medium text-slate-700">Avatar</label>
+                            <input
+                                id="avatar"
+                                name="avatar"
+                                type="file"
+                                accept="image/*"
+                                class="block w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-xl file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-sm file:font-medium file:text-slate-700"
+                            >
+                            <p class="text-xs leading-5 text-slate-500">Gunakan gambar JPG, PNG, GIF, BMP, atau WEBP. Maksimal 2 MB.</p>
+                            @error('avatar')
+                                <p class="text-sm text-rose-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
 
                     <div class="grid gap-5 md:grid-cols-2">
                         <div class="flex flex-col gap-2">
@@ -96,10 +125,27 @@
             </article>
 
             <article class="rounded-[2rem] border border-black/5 bg-white p-6 shadow-[0_24px_80px_-40px_rgba(15,23,42,0.24)]">
-                <div class="space-y-3">
+                <div class="space-y-4">
                     <p class="text-sm font-medium text-[var(--color-brand-600)]">Profil Publik</p>
-                    <h2 class="text-2xl font-semibold text-slate-950">{{ $profile->display_name }}</h2>
-                    <p class="text-sm leading-6 text-slate-600">{{ $profile->bio ?: 'Bio belum diisi.' }}</p>
+
+                    <div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                        @if ($profile->avatarUrl())
+                            <img
+                                src="{{ $profile->avatarUrl() }}"
+                                alt="{{ $profile->display_name }}"
+                                class="size-20 rounded-full object-cover shadow-sm"
+                            >
+                        @else
+                            <div class="flex size-20 items-center justify-center rounded-full bg-slate-50 text-2xl font-semibold text-slate-800 shadow-sm">
+                                {{ $profile->initials() }}
+                            </div>
+                        @endif
+
+                        <div class="space-y-2">
+                            <h2 class="text-2xl font-semibold text-slate-950">{{ $profile->display_name }}</h2>
+                            <p class="text-sm leading-6 text-slate-600">{{ $profile->bio ?: 'Bio belum diisi.' }}</p>
+                        </div>
+                    </div>
                 </div>
 
                 <dl class="mt-6 grid gap-4 sm:grid-cols-2">
@@ -339,6 +385,7 @@
                     <li class="rounded-2xl bg-slate-50 px-4 py-3">Edit profil sudah aktif di dashboard.</li>
                     <li class="rounded-2xl bg-slate-50 px-4 py-3">CRUD link sekarang tersedia di dashboard.</li>
                     <li class="rounded-2xl bg-slate-50 px-4 py-3">Kontrol naik dan turun sudah tersedia untuk pengaturan urutan cepat.</li>
+                    <li class="rounded-2xl bg-slate-50 px-4 py-3">Avatar upload sekarang tersedia untuk memperjelas identitas profil.</li>
                 </ul>
 
                 <div class="mt-6 rounded-2xl border border-dashed border-slate-200 p-4">
