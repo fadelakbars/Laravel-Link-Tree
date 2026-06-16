@@ -6,4 +6,17 @@
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-brand-50: oklch(0.98 0.01 240);
+    --color-brand-100: oklch(0.95 0.02 240);
+    --color-brand-500: oklch(0.63 0.17 252);
+    --color-brand-600: oklch(0.57 0.18 252);
+    --color-ink-900: oklch(0.27 0.03 252);
+    --color-surface-50: oklch(0.99 0.004 106);
+    --color-surface-100: oklch(0.97 0.006 106);
+}
+
+@layer base {
+    body {
+        @apply bg-[var(--color-surface-50)] text-[var(--color-ink-900)] antialiased;
+    }
 }
