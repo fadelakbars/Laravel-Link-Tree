@@ -15,6 +15,7 @@ class DashboardController extends Controller
         return view('dashboard', [
             'user' => $user,
             'profile' => $user->profile,
+            'currentTab' => request('tab', 'links'),
         ]);
     }
 }
