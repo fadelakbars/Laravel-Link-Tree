@@ -1,43 +1,53 @@
 <x-layouts.app :title="$profile->display_name">
-    <main class="mx-auto flex min-h-screen max-w-xl flex-col justify-center px-6 py-12">
-        <section class="rounded-[2rem] border border-white/70 bg-white/95 p-6 shadow-[0_30px_90px_-42px_rgba(15,23,42,0.32)] backdrop-blur sm:p-8">
-            <div class="flex flex-col items-center gap-5 text-center">
-                @if ($profile->avatarUrl())
-                    <img
-                        src="{{ $profile->avatarUrl() }}"
-                        alt="{{ $profile->display_name }}"
-                        class="size-24 rounded-full object-cover shadow-sm"
-                    >
-                @else
-                    <div class="flex size-24 items-center justify-center rounded-full bg-[var(--color-surface-100)] text-3xl font-semibold text-slate-800 shadow-sm">
-                        {{ $profile->initials() }}
-                    </div>
-                @endif
-
-                <div class="space-y-2">
-                    <h1 class="text-3xl font-semibold tracking-tight text-slate-950">{{ $profile->display_name }}</h1>
-                    @if ($profile->bio)
-                        <p class="text-sm leading-7 text-slate-600">{{ $profile->bio }}</p>
+    <main class="mx-auto flex min-h-screen max-w-xl flex-col items-center px-6 py-16">
+        <div class="w-full space-y-12">
+            <header class="flex flex-col items-center gap-6 text-center">
+                <div class="relative">
+                    @if ($profile->avatarUrl())
+                        <img
+                            src="{{ $profile->avatarUrl() }}"
+                            alt="{{ $profile->display_name }}"
+                            class="size-28 rounded-[2.5rem] object-cover shadow-2xl ring-4 ring-white"
+                        >
+                    @else
+                        <div class="flex size-28 items-center justify-center rounded-[2.5rem] bg-white text-4xl font-bold text-slate-800 shadow-2xl ring-4 ring-white">
+                            {{ $profile->initials() }}
+                        </div>
                     @endif
                 </div>
-            </div>
 
-            <div class="mt-8 flex flex-col gap-3">
-                @forelse ($profile->links as $link)
+                <div class="space-y-3">
+                    <h1 class="text-3xl font-bold tracking-tight text-slate-900">{{ $profile->display_name }}</h1>
+                    @if ($profile->bio)
+                        <p class="mx-auto max-w-sm text-base leading-relaxed text-slate-600">{{ $profile->bio }}</p>
+                    @endif
+                </div>
+            </header>
+
+            <section class="flex flex-col gap-4">
+                @forelse ($profile->links->where('is_active', true) as $link)
                     <a
                         href="{{ $link->url }}"
                         target="_blank"
                         rel="noreferrer noopener"
-                        class="inline-flex min-h-14 items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-4 text-center text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50"
+                        class="group relative flex min-h-[4rem] items-center justify-center rounded-[1.5rem] border border-white/40 bg-white/80 px-8 py-4 text-center text-base font-semibold text-slate-900 shadow-[0_8px_30px_rgb(0,0,0,0.04)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] active:scale-95"
                     >
-                        {{ $link->title }}
+                        <span class="relative z-10">{{ $link->title }}</span>
+                        <div class="absolute inset-0 rounded-[1.5rem] bg-linear-to-tr from-transparent via-white/5 to-white/10 opacity-0 transition-opacity group-hover:opacity-100"></div>
                     </a>
                 @empty
-                    <div class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-5 py-6 text-center text-sm text-slate-500">
-                        Belum ada link aktif.
+                    <div class="rounded-[2rem] border-2 border-dashed border-slate-200 bg-white/50 p-12 text-center backdrop-blur-sm">
+                        <p class="text-sm font-medium text-slate-500">Belum ada link aktif.</p>
                     </div>
                 @endforelse
-            </div>
-        </section>
+            </section>
+
+            <footer class="pt-12 text-center">
+                <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-slate-400 uppercase transition hover:text-[var(--color-brand-600)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9Z"/></svg>
+                    Laravel Link Tree
+                </a>
+            </footer>
+        </div>
     </main>
 </x-layouts.app>
