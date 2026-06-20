@@ -7,18 +7,18 @@
                     <h1 class="text-3xl font-semibold tracking-tight text-slate-950">Halo, {{ $user->name }}</h1>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
                     @if ($user->isAdmin())
-                        <a href="{{ route('admin.users.index') }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 cursor-pointer">
+                        <a href="{{ route('admin.users.index') }}" class="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 cursor-pointer">
                             Admin Panel
                         </a>
                     @endif
-                    <a href="{{ route('profiles.show', $profile) }}" target="_blank" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
+                    <a href="{{ route('profiles.show', $profile) }}" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
                         Lihat Profil
                     </a>
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('logout') }}" class="w-full sm:w-auto">
                         @csrf
-                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 cursor-pointer">
+                        <button type="submit" class="w-full inline-flex items-center justify-center rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 cursor-pointer">
                             Logout
                         </button>
                     </form>
