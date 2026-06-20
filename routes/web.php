@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
@@ -29,6 +30,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/links/{link}/move-down', [LinkController::class, 'moveDown'])->name('links.move-down');
     Route::put('/links/{link}', [LinkController::class, 'update'])->name('links.update');
     Route::delete('/links/{link}', [LinkController::class, 'destroy'])->name('links.destroy');
+    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::post('/users/{user}/toggle-admin', [AdminUserController::class, 'toggleAdmin'])->name('users.toggle-admin');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    });
+
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 });
 

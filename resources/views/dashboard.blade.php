@@ -8,6 +8,11 @@
                 </div>
 
                 <div class="flex items-center gap-3">
+                    @if ($user->isAdmin())
+                        <a href="{{ route('admin.users.index') }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 cursor-pointer">
+                            Admin Panel
+                        </a>
+                    @endif
                     <a href="{{ route('profiles.show', $profile) }}" target="_blank" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50">
                         Lihat Profil
                     </a>
