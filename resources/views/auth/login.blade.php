@@ -78,7 +78,7 @@
                         <span>Ingat saya</span>
                     </label>
 
-                    <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-[var(--color-brand-500)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-brand-600)] cursor-pointer">
+                    <button type="submit" class="w-full inline-flex items-center justify-center rounded-2xl bg-[var(--color-brand-500)] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[var(--color-brand-600)] cursor-pointer">
                         Masuk
                     </button>
                 </form>

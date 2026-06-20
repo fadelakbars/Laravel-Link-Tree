@@ -7,7 +7,7 @@
                     <h1 class="text-3xl font-semibold tracking-tight text-slate-950">Halo, {{ $user->name }}</h1>
                 </div>
 
-                <div class="flex items-center gap-3">
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3">
                     @if ($user->isAdmin())
                         <a href="{{ route('admin.users.index') }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 cursor-pointer">
                             Admin Panel
@@ -162,7 +162,7 @@
                                             </div>
                                             <div>
                                                 <h3 class="font-semibold text-slate-900">{{ $link->title }}</h3>
-                                                <p class="text-xs text-slate-500 truncate max-w-[200px] sm:max-w-xs">{{ $link->url }}</p>
+                                                <p class="text-xs text-slate-500 truncate max-w-[120px] min-[400px]:max-w-[180px] sm:max-w-xs">{{ $link->url }}</p>
                                             </div>
                                         </div>
 
@@ -357,27 +357,27 @@
                             @csrf
                             @method('PUT')
 
-                            <div class="flex flex-col gap-6 rounded-[1.5rem] bg-slate-50 p-6 sm:flex-row sm:items-center">
+                            <div class="flex flex-col items-center gap-6 rounded-[1.5rem] bg-slate-50 p-6 text-center sm:flex-row sm:items-center sm:text-left">
                                 @if ($profile->avatarUrl())
                                     <img
                                         src="{{ $profile->avatarUrl() }}"
                                         alt="{{ $profile->display_name }}"
-                                        class="size-24 rounded-3xl object-cover shadow-md"
+                                        class="size-24 rounded-3xl object-cover shadow-md mx-auto sm:mx-0"
                                     >
                                 @else
-                                    <div class="flex size-24 items-center justify-center rounded-3xl bg-white text-3xl font-semibold text-slate-800 shadow-sm">
+                                    <div class="flex size-24 items-center justify-center rounded-3xl bg-white text-3xl font-semibold text-slate-800 shadow-sm mx-auto sm:mx-0">
                                         {{ $profile->initials() }}
                                     </div>
                                 @endif
 
-                                <div class="flex-1 space-y-3">
-                                    <label for="avatar" class="text-sm font-medium text-slate-700">Avatar Profil</label>
+                                <div class="flex-1 space-y-3 w-full">
+                                    <label for="avatar" class="text-sm font-medium text-slate-700 block">Avatar Profil</label>
                                     <input
                                         id="avatar"
                                         name="avatar"
                                         type="file"
                                         accept="image/*"
-                                        class="block w-full text-sm text-slate-500 file:mr-4 file:rounded-xl file:border-0 file:bg-[var(--color-brand-50)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[var(--color-brand-600)] hover:file:bg-[var(--color-brand-100)] transition"
+                                        class="block w-full max-w-xs mx-auto sm:mx-0 text-sm text-slate-500 file:mr-4 file:rounded-xl file:border-0 file:bg-[var(--color-brand-50)] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[var(--color-brand-600)] hover:file:bg-[var(--color-brand-100)] transition"
                                     >
                                     <p class="text-xs text-slate-500">JPG, PNG atau WEBP. Maksimal 2MB.</p>
                                     @error('avatar')

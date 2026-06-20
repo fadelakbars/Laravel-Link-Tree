@@ -1,7 +1,7 @@
 <x-layouts.app title="Link Tree — One Link for Everything">
     <main class="mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-6 py-12 lg:px-10">
-        <div class="grid w-full gap-16 lg:grid-cols-2 lg:items-center">
-            <section class="order-2 space-y-10 lg:order-1">
+        <div class="grid w-full gap-8 lg:gap-16 lg:grid-cols-2 lg:items-center">
+            <section class="order-1 lg:order-1 space-y-10">
                 <div class="inline-flex items-center gap-2 rounded-full border border-[var(--color-brand-100)] bg-white px-4 py-2 text-sm font-bold tracking-tight text-[var(--color-brand-600)] shadow-xs">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-brand-400)] opacity-75"></span>
@@ -40,7 +40,7 @@
                 </div>
             </section>
 
-            <section class="order-1 flex justify-center lg:order-2">
+            <section class="order-2 lg:order-2 flex justify-center">
                 <div class="relative w-full max-w-sm">
                     <!-- Decorative shapes -->
                     <div class="absolute -top-12 -right-12 size-64 rounded-full bg-[var(--color-brand-100)] opacity-40 blur-3xl"></div>
