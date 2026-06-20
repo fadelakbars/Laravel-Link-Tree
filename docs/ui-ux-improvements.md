@@ -1,4 +1,4 @@
-# Panduan Perbaikan UI/UX - Laravel Link Tree
+# Panduan Perbaikan UI/UX - Link Tree
 
 Dokumen ini berisi hasil audit UI/UX serta rekomendasi perbaikan untuk mencapai tema **Clean, Modern, Minimalis, dan Light Mode**.
 

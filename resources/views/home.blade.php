@@ -1,4 +1,4 @@
-<x-layouts.app title="Laravel Link Tree — One Link for Everything">
+<x-layouts.app title="Link Tree — One Link for Everything">
     <main class="mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-6 py-12 lg:px-10">
         <div class="grid w-full gap-16 lg:grid-cols-2 lg:items-center">
             <section class="order-2 space-y-10 lg:order-1">
@@ -7,7 +7,7 @@
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-brand-400)] opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-brand-500)]"></span>
                     </span>
-                    Laravel Link Tree
+                    Link Tree
                 </div>
 
                 <div class="space-y-6">
@@ -71,7 +71,7 @@
                         <div class="mt-10 pt-6 border-t border-slate-50 text-center">
                             <div class="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-slate-300 uppercase">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="size-3"><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9Z"/></svg>
-                                Laravel Link Tree
+                                Link Tree
                             </div>
                         </div>
                     </div>

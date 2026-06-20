@@ -69,7 +69,7 @@
             <footer class="pt-12 text-center">
                 <a href="{{ route('home') }}" class="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-slate-300 uppercase transition hover:opacity-100" style="hover: color: var(--theme-color);">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="size-3"><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9Z"/></svg>
-                    Laravel Link Tree
+                    Link Tree
                 </a>
             </footer>
         </div>

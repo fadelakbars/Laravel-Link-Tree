@@ -144,7 +144,7 @@
                         <div id="sortable-links" class="flex flex-col gap-4">
                             @forelse ($profile->links as $link)
                                 <div data-id="{{ $link->id }}" class="group relative rounded-[2rem] border border-black/5 bg-white p-5 shadow-sm transition hover:shadow-md cursor-grab active:cursor-grabbing">
-                                    <div class="flex items-start justify-between gap-4">
+                                    <div class="flex items-center justify-between gap-4">
                                         <div class="flex items-center gap-4">
                                             <div class="handle flex size-12 items-center justify-center rounded-2xl bg-slate-50 text-slate-400 group-hover:bg-[var(--color-brand-50)] group-hover:text-[var(--color-brand-500)] transition-colors">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg>
@@ -156,7 +156,7 @@
                                         </div>
 
                                         <div class="flex items-center gap-2">
-                                            <form method="POST" action="{{ route('links.update', $link) }}">
+                                            <form method="POST" action="{{ route('links.update', $link) }}" class="flex items-center">
                                                 @csrf
                                                 @method('PUT')
                                                 <input type="hidden" name="title" value="{{ $link->title }}">
@@ -168,7 +168,7 @@
                                             </form>
                                             
                                             <details class="relative">
-                                                <summary class="list-none cursor-pointer p-2 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-600">
+                                                <summary class="flex list-none cursor-pointer items-center justify-center p-2 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-600">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                                                 </summary>
                                                 <div class="absolute right-0 top-full z-10 mt-2 w-48 rounded-2xl border border-black/5 bg-white p-2 shadow-xl">

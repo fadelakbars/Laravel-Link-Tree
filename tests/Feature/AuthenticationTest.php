@@ -74,6 +74,7 @@ test('authenticated user can update profile details', function () {
         'display_name' => 'New Public Name',
         'slug' => 'New Public Slug',
         'bio' => 'Bio yang sudah diperbarui.',
+        'theme_color' => '#000000',
     ]);
 
     $response->assertRedirect(route('dashboard'));
@@ -104,6 +105,7 @@ test('profile update requires a unique slug', function () {
         'display_name' => 'Second User',
         'slug' => 'first-user',
         'bio' => null,
+        'theme_color' => '#000000',
     ]);
 
     $response->assertRedirect(route('dashboard'));
@@ -128,6 +130,7 @@ test('authenticated user can upload and replace profile avatar', function () {
         'slug' => 'avatar-user',
         'bio' => 'Avatar bio',
         'avatar' => $firstAvatar,
+        'theme_color' => '#000000',
     ]);
 
     $firstResponse->assertRedirect(route('dashboard'));
@@ -144,6 +147,7 @@ test('authenticated user can upload and replace profile avatar', function () {
         'slug' => 'avatar-user',
         'bio' => 'Avatar bio updated',
         'avatar' => $secondAvatar,
+        'theme_color' => '#000000',
     ]);
 
     $secondResponse->assertRedirect(route('dashboard'));
