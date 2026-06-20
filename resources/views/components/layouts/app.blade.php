@@ -11,6 +11,7 @@
         @endif
 
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <style>[x-cloak] { display: none !important; }</style>
     </head>
     <body>
         <div class="min-h-screen bg-linear-to-b from-white via-[var(--color-surface-50)] to-[var(--color-brand-50)]">

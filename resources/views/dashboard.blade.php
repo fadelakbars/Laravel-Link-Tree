@@ -40,7 +40,7 @@
             <div class="space-y-8">
                 @if ($currentTab === 'links')
                     <section class="space-y-6">
-                        <details class="group rounded-[2rem] border border-black/5 bg-white shadow-[0_24px_80px_-40px_rgba(15,23,42,0.24)] lg:p-2 overflow-hidden" {{ old('title') || $errors->any() ? 'open' : '' }}>
+                        <details class="group rounded-[2rem] border border-black/5 bg-white shadow-[0_24px_80px_-40px_rgba(15,23,42,0.24)] lg:p-2 overflow-hidden" {{ (old('title') || $errors->any()) && !session('editing_link_id') ? 'open' : '' }}>
                             <summary class="list-none cursor-pointer p-6 lg:p-8 flex items-center justify-between group-open:pb-2 transition-all">
                                 <div class="space-y-1">
                                     <h2 class="text-2xl font-semibold text-slate-950">Kelola Link</h2>
@@ -143,8 +143,14 @@
 
                         <div id="sortable-links" class="flex flex-col gap-4">
                             @forelse ($profile->links as $link)
-                                <div data-id="{{ $link->id }}" class="group relative rounded-[2rem] border border-black/5 bg-white p-5 shadow-sm transition hover:shadow-md cursor-grab active:cursor-grabbing">
-                                    <div class="flex items-center justify-between gap-4">
+                                <div 
+                                    data-id="{{ $link->id }}" 
+                                    x-data="{ editing: {{ session('editing_link_id') == $link->id ? 'true' : 'false' }} }"
+                                    class="group relative rounded-[2rem] border border-black/5 bg-white p-5 shadow-sm transition hover:shadow-md"
+                                    :class="editing ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'"
+                                >
+                                    <!-- Display View -->
+                                    <div x-show="!editing" class="flex items-center justify-between gap-4">
                                         <div class="flex items-center gap-4">
                                             <div class="handle flex size-12 items-center justify-center rounded-2xl bg-slate-50 text-slate-400 group-hover:bg-[var(--color-brand-50)] group-hover:text-[var(--color-brand-500)] transition-colors">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg>
@@ -172,16 +178,116 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                                                 </summary>
                                                 <div class="absolute right-0 top-full z-10 mt-2 w-48 rounded-2xl border border-black/5 bg-white p-2 shadow-xl">
+                                                    <button type="button" @click="editing = true; open = false" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                                                        Edit
+                                                    </button>
                                                     <form method="POST" action="{{ route('links.destroy', $link) }}">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-sm text-rose-600 hover:bg-rose-50">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
                                                             Hapus
                                                         </button>
                                                     </form>
                                                 </div>
                                             </details>
                                         </div>
+                                    </div>
+
+                                    <!-- Edit View -->
+                                    <div x-show="editing" x-cloak class="pt-2">
+                                        <form method="POST" action="{{ route('links.update', $link) }}" class="space-y-4">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="is_active" value="{{ $link->is_active ? 1 : 0 }}">
+
+                                            <div class="grid gap-4 sm:grid-cols-2">
+                                                <div class="flex flex-col gap-1.5">
+                                                    <label for="edit_title_{{ $link->id }}" class="text-xs font-medium text-slate-600">Judul Link</label>
+                                                    <input
+                                                        id="edit_title_{{ $link->id }}"
+                                                        name="title"
+                                                        type="text"
+                                                        value="{{ old('editing_link_id') == $link->id ? old('title', $link->title) : $link->title }}"
+                                                        class="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                                        required
+                                                    >
+                                                    @if (session('editing_link_id') == $link->id)
+                                                        @error('title')
+                                                            <p class="text-xs text-rose-600">{{ $message }}</p>
+                                                        @enderror
+                                                    @endif
+                                                </div>
+
+                                                <div class="flex flex-col gap-1.5">
+                                                    <label for="edit_url_{{ $link->id }}" class="text-xs font-medium text-slate-600">URL</label>
+                                                    <input
+                                                        id="edit_url_{{ $link->id }}"
+                                                        name="url"
+                                                        type="text"
+                                                        value="{{ old('editing_link_id') == $link->id ? old('url', $link->url) : $link->url }}"
+                                                        class="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                                        required
+                                                    >
+                                                    @if (session('editing_link_id') == $link->id)
+                                                        @error('url')
+                                                            <p class="text-xs text-rose-600">{{ $message }}</p>
+                                                        @enderror
+                                                    @endif
+                                                </div>
+
+                                                <div class="flex flex-col gap-1.5">
+                                                    <label for="edit_icon_{{ $link->id }}" class="text-xs font-medium text-slate-600">Icon / Label (Opsional)</label>
+                                                    <input
+                                                        id="edit_icon_{{ $link->id }}"
+                                                        name="icon"
+                                                        type="text"
+                                                        value="{{ old('editing_link_id') == $link->id ? old('icon', $link->icon) : $link->icon }}"
+                                                        class="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                                    >
+                                                    @if (session('editing_link_id') == $link->id)
+                                                        @error('icon')
+                                                            <p class="text-xs text-rose-600">{{ $message }}</p>
+                                                        @enderror
+                                                    @endif
+                                                </div>
+
+                                                <div class="flex flex-col gap-1.5">
+                                                    <label for="edit_sort_order_{{ $link->id }}" class="text-xs font-medium text-slate-600">Urutan</label>
+                                                    <input
+                                                        id="edit_sort_order_{{ $link->id }}"
+                                                        name="sort_order"
+                                                        type="number"
+                                                        min="1"
+                                                        value="{{ old('editing_link_id') == $link->id ? old('sort_order', $link->sort_order) : $link->sort_order }}"
+                                                        class="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 outline-none transition focus:border-[var(--color-brand-500)]"
+                                                        required
+                                                    >
+                                                    @if (session('editing_link_id') == $link->id)
+                                                        @error('sort_order')
+                                                            <p class="text-xs text-rose-600">{{ $message }}</p>
+                                                        @enderror
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="flex justify-end gap-3 pt-2">
+                                                <button 
+                                                    type="button" 
+                                                    @click="editing = false" 
+                                                    class="inline-flex h-9 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 active:scale-95"
+                                                >
+                                                    Batal
+                                                </button>
+                                                <button 
+                                                    type="submit" 
+                                                    class="inline-flex h-9 items-center justify-center rounded-xl bg-slate-950 px-4 text-xs font-semibold text-white transition hover:bg-slate-800 active:scale-95 shadow-sm"
+                                                >
+                                                    Simpan
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             @empty

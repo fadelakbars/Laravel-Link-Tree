@@ -283,3 +283,32 @@ test('authenticated user can create a mailto link', function () {
     expect($link->url)->toBe('mailto:owner@example.com');
     expect($link->is_active)->toBeTrue();
 });
+
+test('failed update validation flashes editing_link_id to session', function () {
+    $user = User::factory()->create();
+
+    $profile = $user->profile()->create([
+        'display_name' => 'Owner',
+        'slug' => 'owner',
+    ]);
+
+    $link = $profile->links()->create([
+        'title' => 'Old Link',
+        'url' => 'https://example.com/old',
+        'icon' => 'link',
+        'is_active' => true,
+        'sort_order' => 1,
+    ]);
+
+    $response = $this->actingAs($user)->from(route('dashboard'))->put(route('links.update', $link), [
+        'title' => '', // empty title to trigger validation failure
+        'url' => 'invalid-url',
+        'icon' => 'globe',
+        'sort_order' => 3,
+        'is_active' => '0',
+    ]);
+
+    $response->assertRedirect(route('dashboard'));
+    $response->assertSessionHas('editing_link_id', $link->id);
+    $response->assertSessionHasErrors(['title', 'url']);
+});

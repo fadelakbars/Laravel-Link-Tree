@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Link;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\Attributes\RedirectToRoute;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -54,5 +55,13 @@ class UpdateLinkRequest extends FormRequest
             'is_active' => $this->boolean('is_active'),
             'sort_order' => (int) $this->input('sort_order', 1),
         ]);
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $link = $this->route('link');
+        session()->flash('editing_link_id', $link instanceof Link ? $link->id : $link);
+
+        parent::failedValidation($validator);
     }
 }
