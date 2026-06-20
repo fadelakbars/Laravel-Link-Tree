@@ -35,8 +35,8 @@
             >
                 <span>Permintaan Reset</span>
                 @if ($pendingResetsCount > 0)
-                    <span class="inline-flex items-center rounded-full bg-rose-50 px-2 py-0.5 text-xs font-semibold text-rose-600 ring-1 ring-inset ring-rose-600/10">
-                        {{ $pendingResetsCount }} pending
+                    <span class="inline-flex items-center justify-center size-5 rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm shadow-rose-500/10 shrink-0">
+                        {{ $pendingResetsCount }}
                     </span>
                 @endif
             </a>
