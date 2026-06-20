@@ -26,7 +26,16 @@ class StoreLinkRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'url' => ['required', 'string', 'url', 'max:2048'],
+            'url' => [
+                'required',
+                'string',
+                'max:2048',
+                function (string $attribute, mixed $value, \Closure $fail) {
+                    if (! filter_var($value, FILTER_VALIDATE_URL) && ! str_starts_with((string) $value, 'mailto:')) {
+                        $fail('Format URL tidak valid atau harus berupa link email (mailto:).');
+                    }
+                },
+            ],
             'icon' => ['nullable', 'string', 'max:50'],
             'sort_order' => ['required', 'integer', 'min:1'],
             'is_active' => ['required', 'boolean'],

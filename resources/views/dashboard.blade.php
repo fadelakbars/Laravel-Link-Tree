@@ -78,7 +78,7 @@
                                         <input
                                             id="link_url"
                                             name="url"
-                                            type="url"
+                                            type="text"
                                             value="{{ old('url') }}"
                                             class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[var(--color-brand-500)]"
                                             placeholder="https://example.com"

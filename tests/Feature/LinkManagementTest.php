@@ -256,3 +256,30 @@ test('moving bottom link keeps order intact', function () {
     expect($firstLink->sort_order)->toBe(1);
     expect($secondLink->sort_order)->toBe(2);
 });
+
+test('authenticated user can create a mailto link', function () {
+    $user = User::factory()->create();
+
+    $user->profile()->create([
+        'display_name' => 'Owner',
+        'slug' => 'owner',
+    ]);
+
+    $response = $this->actingAs($user)->post(route('links.store'), [
+        'title' => 'Email Me',
+        'url' => 'mailto:owner@example.com',
+        'icon' => 'mail',
+        'sort_order' => 1,
+        'is_active' => '1',
+    ]);
+
+    $response->assertRedirect(route('dashboard'));
+    $response->assertSessionHas('status', 'Link baru berhasil ditambahkan.');
+
+    $link = $user->profile->fresh()->links()->first();
+
+    expect($link)->not->toBeNull();
+    expect($link->title)->toBe('Email Me');
+    expect($link->url)->toBe('mailto:owner@example.com');
+    expect($link->is_active)->toBeTrue();
+});
