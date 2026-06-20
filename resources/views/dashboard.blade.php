@@ -167,7 +167,7 @@
                                                 </button>
                                             </form>
                                             
-                                            <details class="relative">
+                                            <details class="relative" x-data="{ open: false }" :open="open" @toggle="open = $event.target.open" @click.outside="open = false">
                                                 <summary class="flex list-none cursor-pointer items-center justify-center p-2 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-600">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                                                 </summary>
