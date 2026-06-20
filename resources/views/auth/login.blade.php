@@ -29,7 +29,10 @@
                     </div>
 
                     <div class="flex flex-col gap-2">
-                        <label for="password" class="text-sm font-medium text-slate-700">Password</label>
+                        <div class="flex items-center justify-between">
+                            <label for="password" class="text-sm font-medium text-slate-700">Password</label>
+                            <a href="{{ route('password.request') }}" class="text-xs font-semibold text-[var(--color-brand-600)] hover:text-[var(--color-brand-700)] transition cursor-pointer">Lupa password?</a>
+                        </div>
                         <div class="relative">
                             <input
                                 id="password"
