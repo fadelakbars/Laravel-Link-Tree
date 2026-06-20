@@ -13,7 +13,7 @@
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
+                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 cursor-pointer">
                             Logout
                         </button>
                     </form>
@@ -133,7 +133,7 @@
                                             <span>Langsung aktifkan link ini</span>
                                         </label>
 
-                                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-[var(--color-brand-500)] px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-brand-600)] shadow-lg shadow-[var(--color-brand-500)]/20">
+                                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-[var(--color-brand-500)] px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-[var(--color-brand-600)] shadow-lg shadow-[var(--color-brand-500)]/20 cursor-pointer">
                                             Tambah Link
                                         </button>
                                     </div>
@@ -178,14 +178,14 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
                                                 </summary>
                                                 <div class="absolute right-0 top-full z-10 mt-2 w-48 rounded-2xl border border-black/5 bg-white p-2 shadow-xl">
-                                                    <button type="button" @click="editing = true; open = false" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">
+                                                    <button type="button" @click="editing = true; open = false" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 cursor-pointer">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
                                                         Edit
                                                     </button>
                                                     <form method="POST" action="{{ route('links.destroy', $link) }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-sm text-rose-600 hover:bg-rose-50">
+                                                        <button type="submit" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 cursor-pointer">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
                                                             Hapus
                                                         </button>
@@ -276,13 +276,13 @@
                                                 <button 
                                                     type="button" 
                                                     @click="editing = false" 
-                                                    class="inline-flex h-9 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 active:scale-95"
+                                                    class="inline-flex h-9 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 active:scale-95 cursor-pointer"
                                                 >
                                                     Batal
                                                 </button>
                                                 <button 
                                                     type="submit" 
-                                                    class="inline-flex h-9 items-center justify-center rounded-xl bg-slate-950 px-4 text-xs font-semibold text-white transition hover:bg-slate-800 active:scale-95 shadow-sm"
+                                                    class="inline-flex h-9 items-center justify-center rounded-xl bg-slate-950 px-4 text-xs font-semibold text-white transition hover:bg-slate-800 active:scale-95 shadow-sm cursor-pointer"
                                                 >
                                                     Simpan
                                                 </button>
@@ -457,7 +457,7 @@
                             </div>
 
                             <div class="flex justify-end pt-4">
-                                <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-slate-800">
+                                <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-slate-800 cursor-pointer">
                                     Simpan Perubahan
                                 </button>
                             </div>
